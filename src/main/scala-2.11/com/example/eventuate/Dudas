@@ -1,0 +1,17 @@
+De la charla de DDD Europe de Greg Young
+ - Username must be unique. Por qué "menosprecia" esta pregunta? Todavia no se como resolverlo. El write side muust query the read side?
+ - Commands must be fire & forget. Young dice que no, pero que pasa en aquellos casos donde lo que dispara el usuario puede terminar invocando muchos servicios
+   y no se le puede decir inmediatamente si su comando tuvo exito?
+
+- Para crear un Match y luego asignarle el primer jugador yo guardo el evento Match created y onEvent case MatchCreated
+  invoco al servicio para guardar el primer jugador.
+  Si luego de escribir el evento pero antes de invocar al servicio el nodo se cae, me queda un match sin creador.
+  (porque creo que en recovering no hace side effects)... como hace para que al invocar el servicio no haga nada?
+
+- Como hacer para simular que se cayo la conexion entre los dos endpoint en las pruebas locales?
+  Para test automaticos es con Eventuate Tools?
+
+- Mi view se actualiza con ValueUpdated (y luego demultiplexo en la Op correspondiente por ejemplo AddOp). Pero todos los CRDT
+  persiten evento del mismo tipo, con lo cual si uso dos tipos de CRDT o el mismo tipo pero para cosas distintas la misma view va a
+  recibir todos los eventos.
+  Complex event routing es la solucion?
