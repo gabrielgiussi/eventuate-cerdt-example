@@ -1,0 +1,11 @@
+El objetivo seria tener una unica imagen eventuate-cerdt-server que al ejecutarse (docker run) se pueda configurar con los parametros necesarios.
+Estos son:
+- URL de mongo
+- LevelDB directory
+- Akka Remote Config. (e.g TCP Port) Ver http://doc.akka.io/docs/akka/2.4/scala/remoting.html#Akka_behind_NAT_or_in_a_Docker_container
+- Akka HTTP Port.
+- Endpoint config (e.g id, replication connectios)
+
+Entender porque empezo a funcionar tanto HTTP como Remoting cuando configure la IP 0.0.0.0
+
+Por qué usan un dns (start-dns.sh) en eventuate-chaos? Los containers no vienen ya con un dns? Si no nunca funcionaria "link"

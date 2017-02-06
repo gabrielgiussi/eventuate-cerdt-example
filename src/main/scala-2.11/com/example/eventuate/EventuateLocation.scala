@@ -5,8 +5,7 @@ import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.Source
 import com.rbmhtechnology.eventuate.ReplicationConnection._
 import com.rbmhtechnology.eventuate.ReplicationEndpoint
-import com.rbmhtechnology.eventuate.crdt.CERMatch.MatchService
-import com.rbmhtechnology.eventuate.crdt.CounterService
+import com.rbmhtechnology.eventuate.crdt.{CERDTAwaker, CounterService, MatchService}
 import com.rbmhtechnology.eventuate.log.leveldb.LeveldbEventLog
 import com.typesafe.config.ConfigFactory
 
@@ -15,7 +14,6 @@ class EventuateLocation(val locationId: String, port: Int, val mongoUri: String,
   implicit val system = ActorSystem(DefaultRemoteSystemName, ConfigFactory.load(locationId))
   val endpoint = ReplicationEndpoint(id => LeveldbEventLog.props(id))(system)
   endpoint.activate()
-  val counterService = new CounterService[Int]("counterService",endpoint.logs(ReplicationEndpoint.DefaultLogName))
   val matchService = new MatchService("matchService",endpoint.logs(ReplicationEndpoint.DefaultLogName))
   val manager = system.actorOf(Props(new MatchManager(endpoint.id,matchService, endpoint.logs(ReplicationEndpoint.DefaultLogName))))
   val view = system.actorOf(Props(new MatchView(endpoint.id, endpoint.logs(ReplicationEndpoint.DefaultLogName))))
@@ -28,6 +26,8 @@ class EventuateLocation(val locationId: String, port: Int, val mongoUri: String,
   val mongoCollections = new MongoCollections(mongoUri,dbname,system.dispatcher)
 
   val apologiesWriter = system.actorOf(Props(new ApologiesWriter(endpoint.id,endpoint.logs(ReplicationEndpoint.DefaultLogName),mongoCollections)))
+
+  val awaker = system.actorOf(Props(new CERDTAwaker(endpoint.id,matchService,endpoint.logs(ReplicationEndpoint.DefaultLogName))))
 
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher

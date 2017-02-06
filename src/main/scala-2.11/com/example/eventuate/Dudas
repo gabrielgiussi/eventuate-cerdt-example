@@ -8,9 +8,6 @@ De la charla de DDD Europe de Greg Young
   Si luego de escribir el evento pero antes de invocar al servicio el nodo se cae, me queda un match sin creador.
   (porque creo que en recovering no hace side effects)... como hace para que al invocar el servicio no haga nada?
 
-- Como hacer para simular que se cayo la conexion entre los dos endpoint en las pruebas locales?
-  Para test automaticos es con Eventuate Tools?
-
 - Mi view se actualiza con ValueUpdated (y luego demultiplexo en la Op correspondiente por ejemplo AddOp). Pero todos los CRDT
   persiten evento del mismo tipo, con lo cual si uso dos tipos de CRDT o el mismo tipo pero para cosas distintas la misma view va a
   recibir todos los eventos.

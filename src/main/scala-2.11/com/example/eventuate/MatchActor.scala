@@ -4,7 +4,7 @@ import java.util.Date
 
 import akka.actor.ActorRef
 import com.rbmhtechnology.eventuate.EventsourcedActor
-import com.rbmhtechnology.eventuate.crdt.CERMatch.MatchService
+import com.rbmhtechnology.eventuate.crdt.MatchService
 
 import scala.util.{Failure, Success}
 

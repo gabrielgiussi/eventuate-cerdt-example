@@ -35,16 +35,6 @@ class MatchServer(val port: Int,implicit val system: ActorSystem,implicit val ma
           case Success(a) => complete(HttpEntity(`application/json`,"{msg: 'Player Created'}"))
           case Failure(e) => complete(500,HttpEntity(`application/json`,s"{err: ${e.getMessage}"))
         }
-        /*
-      formFieldMap { fields => {
-        val player = fields get "player" get
-        val f = manager ? AddPlayer(id.toString, player)
-        onSuccess(f) { res =>
-          complete("Player added")
-        }
-      }
-      }
-      */
       }
     }
   }
@@ -77,44 +67,9 @@ class MatchServer(val port: Int,implicit val system: ActorSystem,implicit val ma
           }
         }
       }
-       /* post {
-          formFieldMap { fields => {
-            val creator = fields get "creator" get
-            val format = new java.text.SimpleDateFormat("dd/MM/yyyy")
-            val date: Date = format.parse(fields get "date" get)
-            val place = fields get "place" get
-            val f: Future[Option[Match]] = manager ? CreateMatch(java.util.UUID.randomUUID().toString, creator, date, place) map (created => Some(created.asInstanceOf[CreateMatchSuccess].m)) recover { case _ => None }
-            onSuccess(f) {
-              case Some(m) => complete(m)
-              case None => complete(500,"No se pudo crear el partido")
-            }
-          }
-          }
-        }*/
 
     }
   }
-  /*
-    def greeter: Flow[Message, Message, Any] =
-      Flow[Message].mapConcat {
-        case tm: TextMessage =>
-          TextMessage(Source.single("Hello ") ++ tm.textStream ++ Source.single("!")) :: Nil
-      }
-    val websocketRoute =
-      path("greeter") {
-        handleWebSocketMessages(greeter)
-      }
-
-    val $apologies = Flow[EducatedActor.MatchApology]
-      .map { elem => println(elem); elem }
-      .to(Sink.foreach({x => TextMessage("")}))
-      .runWith(educatedActorSource)
-
-    val myFlow = Flow.fromSinkAndSource(Sink.ignore, educatedActorSource map {d => TextMessage.Strict(d.removed)})
-  */
-
-
-  //def myFlow2(player: String) = Flow.fromSinkAndSource(Sink.ignore, pruebaActorSource filter {_ equals player} map {d => TextMessage.Strict("Creaste un partido")})
 
   def myFlow(player: String) = {
     println("Player: " + player)
@@ -171,11 +126,7 @@ class MatchServer(val port: Int,implicit val system: ActorSystem,implicit val ma
     } ~ matchs ~ matchRoute ~ addPlayer ~ apologies
 
 
-  val bindingFuture = Http().bindAndHandle(route, "localhost", port)
-  StdIn.readLine() // let it run until user presses return
-  bindingFuture
-    .flatMap(_.unbind()) // trigger unbinding from the port
-    .onComplete(_ => system.terminate()) // and shutdown when done
+  val bindingFuture = Http().bindAndHandle(route, "0.0.0.0", 8080)
 
 
 }

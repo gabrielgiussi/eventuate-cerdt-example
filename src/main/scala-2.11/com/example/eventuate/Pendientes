@@ -1,18 +1,4 @@
 ### APOLOGIES ###
-- En ciertos casos se esta emitiendo la Apology(Lore,Lore) por ejemplo.
-En principo para evitar esto lo que hacia era emitirla solo si el emisor de la operation que se deshace e el mismo donde estoy parado
-Pero esto hacia que nunca se emita esa Apology, de hecho ahora se deberia estar emitiendo dos veces la misma Apology (una en cada endpoint) pero no es asi.
-Esto se da cuando en el siguiente caso
-1. Endpoint A y B levantados
-2. Agrego hasta el limite - 1 (se replica en los dos endpoints)
-3. Bajo el Endpoint B
-4. Agrego la entrada que se va a eliminar (en este caso Lore)
-5. Bajo el Endpoint A
-6. Subo el endpoint B
-7. Agrego la entrada que va a quedar (en este caso Delpo)
-8. Levanto el Endpoint A
-9. El Endpoint B emite la Apology(Lore,Lore) (El Endpoint A no emite nada porque esta en recovering)
-
 - No tengo informacion (aka id) del CRDT en la Apology a menos que la saque del lastEmitterAggregateId en RegretfulActor y se la agregue a MatchApology
 
 - Que pasa con las bajas que no son notificadas? Como se enteraria el usuario que al final no juega el partido?
@@ -20,3 +6,31 @@ Esto se da cuando en el siguiente caso
   No se notifica cuando el actor no llego a enviar la notificacion y se cayo. En recovering no la mando porque si no estria mandando notificaciones viejas
   A menos que siempre mande y use snapshots para limpiar dichas notificaciones. O borrado fisico.
   No seria problema que le lleguen notificaciones repetidas en el rango de una semana por ejemplo.
+
+
+Investigar
+- fabric8
+- mesos
+- kubernetes
+- kubeflix
+- funktion
+- chaos monkey
+- http://www.capsule.io/
+- https://velvia.github.io/Docker-Scala-Sbt/
+- https://github.com/redhat-helloworld-msa/helloworld-msa
+
+
+- fat jar or classpath
+- ver: 
+  > http://stackoverflow.com/questions/3626002/can-java-run-a-compiled-scala-code
+  > http://stackoverflow.com/questions/2930146/running-scala-apps-with-java-jar
+  > http://product.hubspot.com/blog/the-fault-in-our-jars-why-we-stopped-building-fat-jars
+  > 
+
+
+Cuando recibe la apology te dice q estas afuera pero no actualiza los participantes del partido
+entonces te dice jugador a b y c (cuando vos sos c) y te dice que te sacaron
+deberia decir a b y d (jugador c fuiste sacado)
+
+permite seguir agregandose cuando ya esta completo el partido
+le deja agregarse al creador

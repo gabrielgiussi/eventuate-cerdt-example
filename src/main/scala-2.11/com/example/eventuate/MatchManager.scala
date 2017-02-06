@@ -3,7 +3,7 @@ package com.example.eventuate
 import akka.actor.{Actor, ActorRef, Props}
 import akka.util.Timeout
 import com.example.eventuate.MatchActor.MatchCommand
-import com.rbmhtechnology.eventuate.crdt.CERMatch.MatchService
+import com.rbmhtechnology.eventuate.crdt.MatchService
 
 import scala.concurrent.duration._
 

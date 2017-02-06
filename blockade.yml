@@ -1,0 +1,36 @@
+containers:
+  m1:
+    image: mongo:3.2.12
+    container_name: m1
+    volumes:
+      "/mongo/eventuateA": "/data/db"
+
+  m2:
+    image: mongo:3.2.12
+    container_name: m2
+    volumes:
+      "/mongo/eventuateB": "/data/db"
+
+  e1:
+    image: eventuate-cerdt:7.0
+    hostname: e1
+    container_name: e1
+    command: ["location-A","8080","m1"]
+    ports:
+      8080: 8080
+      2552: 2552
+    start_delay: 30
+    links: ["m1"]
+
+  e2:
+    image: eventuate-cerdt:7.0
+    hostname: e2
+    container_name: e2
+    command: ["location-B","8081","m2"]
+    ports:
+      8081: 8081
+      2553: 2553
+    start_delay: 30
+    links: ["m2"]
+
+# vim: set et sw=2 sts=2:
